@@ -1,11 +1,11 @@
 <p align="center">
-    <img src="icon.jpg" alt="Logo" width="200" />
-    <br>
-    <h1 align="center">ResultKit</h1>
+  <img src="icon.jpg" alt="ResultKit Logo" width="200" />
+  <br>
+  <h1 align="center">ResultKit</h1>
 </p>
 
-**Clean, lightweight, and extensible Result type implementation for .NET**  
-Simplifies error handling and functional programming patterns by encapsulating success and failure states consistently.
+> **Clean, lightweight, and extensible Result type implementation for .NET**  
+> Simplifies error handling and functional programming patterns by encapsulating success and failure states consistently.
 
 ## 🚀 Features
 
@@ -18,7 +18,7 @@ Simplifies error handling and functional programming patterns by encapsulating s
 
 ## 📦 Installation
 
-Install RepositoryKit via NuGet Package Manager Console:
+Install ResultKit via NuGet Package Manager Console:
 
 ```bash
 Install-Package ResultKit
@@ -26,14 +26,70 @@ Install-Package ResultKit
 
 Or using the .NET CLI:
 
-```
+```bash
 dotnet add package ResultKit
 ```
 
-## 📝 Notes
+## 📂 Basic Usage
 
-_ResultKit started as a project inspired by and built upon the foundation of Taner Saydam's [TS.Result](https://github.com/TanerSaydam/TS.Result) repository. It aims to provide a clean, lightweight, and extensible Result type implementation tailored for modern .NET development. Future versions will focus on adding new features and improving customization options._
+> ResultKit allows you to represent success and failure states consistently with a simple Result<T> type.
 
-## ⚖️ License
+### Creating and returning results
 
-**RepositoryKit is licensed under the [MIT License](https://github.com/taberkkaya/ResultKit/blob/master/LICENSE.txt).**
+> You can explicitly create success or failure results:
+
+```csharp
+using ResultKit;
+
+public Result<int> Divide(int numerator, int denominator)
+{
+    if (denominator == 0)
+        return Result.Failure<int>("Cannot divide by zero.");
+
+    return Result.Success(numerator / denominator);
+}
+```
+
+### Implicit conversion from raw values
+
+> You can also return raw values directly (like strings or other types) from methods returning Result<T>. Thanks to implicit conversion, these values are automatically wrapped into successful results:
+
+```csharp
+public Result<string> GetMessage(bool success)
+{
+    if (success)
+        return "Operation succeeded!";  // Implicitly converted to Result<string>
+    else
+        return Result.Failure<string>("Operation failed.");
+}
+
+var result = GetMessage(true);
+
+if (result.IsSuccess)
+    Console.WriteLine(result.Value);
+else
+    Console.WriteLine(result.Error);
+```
+
+---
+
+### ✨ Contribution
+
+> Feel free to fork this repository and contribute your improvements.
+
+---
+
+### 🪪 License
+
+> This project is open-source and available under the MIT License.
+
+---
+
+### 🧠 Inspired By
+
+> This project is inspired by the work of [Taner Saydam](https://github.com/TanerSaydam).  
+> Check out his GitHub profile and repositories for more: https://github.com/TanerSaydam
+
+---
+
+<p align="center"> <img src="https://skillicons.dev/icons?i=dotnet,github,visualstudio" /> </p>
