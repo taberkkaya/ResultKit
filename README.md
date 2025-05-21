@@ -41,13 +41,21 @@ dotnet add package ResultKit
 ```csharp
 using ResultKit;
 
-public Result<int> Divide(int numerator, int denominator)
+Result<int> Divide(int numerator, int denominator)
 {
     if (denominator == 0)
-        return Result.Failure<int>("Cannot divide by zero.");
+        return Result<int>.Failure("Cannot divide by zero.");
 
-    return Result.Success(numerator / denominator);
+    return Result<int>.Succeed(numerator / denominator);
 }
+
+Console.WriteLine(Divide(10,0));
+Console.WriteLine(Divide(10,2));
+```
+
+```console
+{"data":0,"errorMessages":["Cannot divide by zero."],"isSuccessful":false,"statusCode":500}
+{"data":5,"errorMessages":null,"isSuccessful":true,"statusCode":200}
 ```
 
 ### Implicit conversion from raw values
@@ -55,20 +63,22 @@ public Result<int> Divide(int numerator, int denominator)
 > You can also return raw values directly (like strings or other types) from methods returning Result<T>. Thanks to implicit conversion, these values are automatically wrapped into successful results:
 
 ```csharp
-public Result<string> GetMessage(bool success)
+using ResultKit;
+
+Result<string> GetMessage(bool success)
 {
     if (success)
         return "Operation succeeded!";  // Implicitly converted to Result<string>
     else
-        return Result.Failure<string>("Operation failed.");
+        return Result<string>.Failure("Operation failed.");
 }
 
 var result = GetMessage(true);
 
-if (result.IsSuccess)
-    Console.WriteLine(result.Value);
+if (result.IsSuccessful)
+    Console.WriteLine(result.Data);
 else
-    Console.WriteLine(result.Error);
+    Console.WriteLine(result.ErrorMessages);
 ```
 
 ---
