@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="icon.jpg" alt="ResultKit Logo" width="200" />
+  <img src="./assets/icon.jpg" alt="ResultKit Logo" width="200" />
   <br>
   <h1 align="center">ResultKit</h1>
 </p>

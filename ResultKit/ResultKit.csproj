@@ -7,12 +7,12 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>ResultKit</PackageId>
     <Title>ResultKit</Title>
-    <Version>2.0.9</Version>
+    <Version>2.1.0</Version>
     <Company>ataberk.dev</Company>
-    <Authors>Ataberk Kaya</Authors>
+    <Authors>ataberk</Authors>
     <Description>A clean, lightweight, and extensible Result type implementation for .NET. Simplifies error handling and functional programming patterns by encapsulating success and failure states in a consistent way. Perfect for improving code clarity and robustness in your projects.</Description>
     <PackageProjectUrl>https://github.com/taberkkaya/ResultKit</PackageProjectUrl>
-    <PackageIcon>icon.jpg</PackageIcon>
+    <PackageIcon>logo64x64.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/taberkkaya/ResultKit</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\icon.jpg">
+    <None Include="..\assets\logo64x64.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
