@@ -3,8 +3,39 @@
 		<TargetFramework>net9.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<PackageId>ResultKit</PackageId>
+		<Title>ResultKit</Title>
+		<Version>9.0.1</Version>
+		<Authors>ataberk</Authors>
+		<Company>ataberk</Company>
+		<Product>ResultKit</Product>
+		<Description>Clean, strongly-typed, and extensible result pattern library for .NET. Functional helpers, error/validation contracts, and seamless ASP.NET Core integration.</Description>
+		<PackageProjectUrl>https://github.com/taberkkaya/ResultKit</PackageProjectUrl>
+		<PackageIcon>logo-64x64.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/taberkkaya/ResultKit</RepositoryUrl>
+		<PackageTags>result functional error validation aspnetcore csharp dotnet</PackageTags>
+		<PackageReleaseNotes>Initial v9.0.1 public release. Typed Result, error/validation, extension methods, implicit support, WebAPI helper.</PackageReleaseNotes>
+		<AssemblyVersion>9.0.1</AssemblyVersion>
+		<FileVersion>9.0.1</FileVersion>
+		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="LICENSE.txt">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Update="logo-64x64.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Update="README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 </Project>
