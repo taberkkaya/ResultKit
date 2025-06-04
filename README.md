@@ -1,144 +1,51 @@
 <div align="center">
   <img src="assets/logo-1250x1250.png" width="120" alt="ResultKit logo" />
-
-# ResultKit
-
-**A Modular & Extensible Result Pattern Library for .NET**
-
+  <h1>ResultKit</h1>
+  <b>A Modular & Extensible Result Pattern Library for .NET</b>
 </div>
 
 ---
 
 ## ✨ Overview
 
-**ResultKit** is a lightweight, strongly-typed, and extensible result abstraction for .NET projects. It enables safe, explicit handling of operation outcomes—success, failure, validation errors, and exceptions—while improving API and service design.
+**ResultKit** is a lightweight, strongly-typed result abstraction for .NET projects. It enables safe and explicit handling of operation outcomes—**success**, **failure**, **validation errors**, and **exceptions**—while improving your API and service design. ResultKit provides a unified way to represent operation results, eliminating ambiguous return codes and ad-hoc error handling.
 
 ---
 
-## 📦 Packages
+## 📦 Installation
 
-| Package     | Description                                 |
-| ----------- | ------------------------------------------- |
-| `ResultKit` | Core result, error, validation abstractions |
-
----
-
-## 🛠️ Installation
+Install via NuGet:
 
 ```bash
-Install-Package ResultKit
+dotnet add package ResultKit
 ```
-
----
-
-## 🚀 Getting Started
-
-```csharp
-using ResultKit;
-
-// Simple success/failure
-var ok = Result.Success();
-var fail = Result.Failure(new Error(ErrorCodes.Validation, "Validation failed"));
-
-// With validation errors
-var validation = Result.ValidationFailure(new[] { new ValidationError("Field", "Message") });
-
-// Strongly-typed generic result
-var value = Result<string>.Success("foo");
-Result<string> fromDto = "implicit"; // Implicit conversion
-
-// Extension methods
-var mapped = value.Map(s => s.ToUpper());
-```
-
----
-
-## 🧩 ASP.NET Core Integration
-
-`Result<T>` can be turned into an API response with auto status code mapping:
-
-```csharp
-[HttpGet("{id}")]
-public ActionResult<Result<UserDto>> GetUser(int id)
-{
-    var dto = new UserDto { Id = id, Name = "Demo" };
-    return Result<UserDto>.Success(dto).ToActionResult();
-}
-```
-
-- `Ok` for success
-- `BadRequest` for validation errors
-- `NotFound` for not found errors
-- `Conflict`, `Unauthorized`, etc.
-
----
-
-## 🧪 Unit Testing
-
-Easy to verify operation results and error handling:
-
-```csharp
-[Fact]
-public void ImplicitOperator_Wraps_Success()
-{
-    Result<string> result = "hi";
-    Assert.True(result.IsSuccess);
-    Assert.Equal("hi", result.Value);
-}
-```
-
-To run all tests:
-
-```bash
-dotnet test tests/ResultKit.Tests
-```
-
----
 
 ## 📁 Folder Structure
 
-```
+```graphql
 src/
-├── ResultKit                  # Core result implementation
+└── ResultKit             # Core result implementation (library source)
 samples/
-├── ResultKit.SampleApi        # Example WebAPI usage
-├── ...
-tests/
-└── ResultKit.Tests            # Unit tests
+└── ResultKit.SampleApi   # Example ASP.NET Core Web API usage
 ```
-
----
-
-## 🧱 Architecture
-
-- `Result`/`Result<T>`: success, error, validation error, exception
-- `Error`, `ValidationError`: standardized error contracts
-- Extension methods: Map, Bind, Match, ToActionResult
-- **Immutable, functional, testable design**
-
----
 
 ## 💡 Motivation
 
-Tired of ambiguous error returns or magic strings? ResultKit brings:
+ResultKit was created to enforce clear, consistent outcomes across your application:
 
-- 🔒 Type-safety for all result flows
-- 🔁 Cleaner APIs & predictable error handling
-- 🧪 Seamless testing
-- 🧩 Integration-ready for service & API layers
+- 🔒 Type-Safety for All Result Flows: No more sentinel values or exception-based control flow—return structured Result objects for both success and failure.
+- 🔁 Cleaner APIs, Predictable Errors: Service and API methods return a single, explicit result type, making intent and error handling obvious.
+- 🧩 Frontend-Friendly: Easily create unified, predictable HTTP responses for API clients and frontend apps.
+- 🧪 Seamless Integration: Supports ASP.NET Core with helpers for direct conversion to HTTP responses.
 
----
+## 📎 Documentation:
+
+See [`src/ResultKit/README.md`](https://github.com/taberkkaya/ResultKit/blob/master/src/ResultKit/README.md) for usage, API details, and integration examples.
+
+## 🤝 Contributing
+
+Contributions and suggestions are welcome!
 
 ## 📜 License
 
 MIT © [Ataberk Kaya](https://github.com/taberkkaya)
-
----
-
-> 📎 For detailed usage and API samples, see `/samples` and `/tests` folders
-
----
-
-<div align="center">
-Made with ❤️ by [@taberkkaya](https://github.com/taberkkaya)
-</div>

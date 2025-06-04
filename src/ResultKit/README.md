@@ -1,144 +1,126 @@
 <div align="center">
-  <img src="assets/logo-1250x1250.png" width="120" alt="ResultKit logo" />
-
-# ResultKit
-
-**A Modular & Extensible Result Pattern Library for .NET**
-
+  <img src="../../assets/logo-1250x1250.png" width="120" alt="ResultKit logo" />
+  <h1>ResultKit</h1>
+  <b>Strongly-Typed, Unified Result Pattern for .NET APIs and Applications</b>
 </div>
 
 ---
 
-## ✨ Overview
+## Overview
 
-**ResultKit** is a lightweight, strongly-typed, and extensible result abstraction for .NET projects. It enables safe, explicit handling of operation outcomes—success, failure, validation errors, and exceptions—while improving API and service design.
-
----
-
-## 📦 Packages
-
-| Package     | Description                                 |
-| ----------- | ------------------------------------------- |
-| `ResultKit` | Core result, error, validation abstractions |
+**ResultKit** brings a simple but powerful pattern for representing the outcome of any operation in .NET. By wrapping your logic with `Result` or `Result<T>`, you can handle success, errors, validation failures, or exceptions—always in a type-safe and explicit way.  
+ResultKit is especially valuable in modern APIs: it encourages unified responses, making error handling and frontend integration easier than ever.
 
 ---
 
-## 🛠️ Installation
+## Installation
 
 ```bash
-Install-Package ResultKit
+dotnet add package ResultKit
 ```
 
----
+### Core Usage
 
-## 🚀 Getting Started
+#### Service Layer Example
 
 ```csharp
 using ResultKit;
 
-// Simple success/failure
-var ok = Result.Success();
-var fail = Result.Failure(new Error(ErrorCodes.Validation, "Validation failed"));
+// Basic success or failure
+Result ok = Result.Success();
+Result fail = Result.Failure(new Error(ErrorCodes.Validation, "Validation failed"));
 
-// With validation errors
-var validation = Result.ValidationFailure(new[] { new ValidationError("Field", "Message") });
+// Validation failure
+var validation = Result.ValidationFailure(new[]
+{
+    new ValidationError("Field", "Invalid value")
+});
 
-// Strongly-typed generic result
-var value = Result<string>.Success("foo");
-Result<string> fromDto = "implicit"; // Implicit conversion
+// Strongly-typed success
+Result<string> value = Result<string>.Success("foo");
 
-// Extension methods
-var mapped = value.Map(s => s.ToUpper());
+// Implicit conversion
+Result<string> implicitOk = "hello"; // treated as Success
 ```
 
----
+### Functional Helpers
 
-## 🧩 ASP.NET Core Integration
-
-`Result<T>` can be turned into an API response with auto status code mapping:
+- _Map:_ Transform the value if success
+- _Bind:_ Chain operations that each return a `Result`
+- _Match:_ Handle both success and error cases in a single expression
 
 ```csharp
-[HttpGet("{id}")]
-public ActionResult<Result<UserDto>> GetUser(int id)
+var upper = value.Map(x => x.ToUpper());
+var chained = value.Bind(s => Result<int>.Success(s.Length));
+var resultText = value.Match(
+    onSuccess: s => $"OK: {s}",
+    onFailure: error => $"Failed: {error.Message}"
+);
+```
+
+## ASP.NET Core API Integration
+
+ResultKit makes returning consistent HTTP responses trivial:
+
+```csharp
+[HttpPost]
+public ActionResult<Result<UserDto>> CreateUser(UserDto dto)
 {
-    var dto = new UserDto { Id = id, Name = "Demo" };
-    return Result<UserDto>.Success(dto).ToActionResult();
+    if (string.IsNullOrWhiteSpace(dto.Name))
+    {
+        return Result<UserDto>.ValidationFailure(new[]
+        {
+            new ValidationError(nameof(dto.Name), "Name is required")
+        }).ToActionResult();
+    }
+
+    // Simulate user creation
+    var created = new UserDto { Name = dto.Name };
+    return Result<UserDto>.Success(created).ToActionResult();
 }
 ```
 
-- `Ok` for success
-- `BadRequest` for validation errors
-- `NotFound` for not found errors
-- `Conflict`, `Unauthorized`, etc.
+- **200 OK** for success
+- **400 Bad Request** for validation errors
+- **404 Not Found** for not found errors
+- **401 Unauthorized**, **409 Conflict**, etc. (mapped automatically)
+- The client/frontend always receives a uniform JSON shape—making client code simpler and more reliable
 
----
+## Core Components
 
-## 🧪 Unit Testing
+- **Result / Result<T>:** Wraps success or failure, and (on success) carries a value.
+- **Error:** Standard error with code and message.
+- **ValidationError:** Field-specific validation error info.
+- **Functional Extensions:** `Map`, `Bind`, `Match`, and more.
 
-Easy to verify operation results and error handling:
+## Why Standardized Responses Matter
 
-```csharp
-[Fact]
-public void ImplicitOperator_Wraps_Success()
+`ResultKit` makes it easy to build APIs that always return the same response shape—regardless of success or error. This means your frontend or client apps can handle results with confidence and less boilerplate:
+
+```json
+// Success response (with value)
 {
-    Result<string> result = "hi";
-    Assert.True(result.IsSuccess);
-    Assert.Equal("hi", result.Value);
+  "isSuccess": true,
+  "value": {
+    "id": 42,
+    "name": "Jane Doe",
+    "email": "jane@example.com"
+  }
+}
+
+// Success response
+{
+  "isSuccess": true,
+  "value": 123
+}
+
+// Error response (not found)
+{
+  "isSuccess": false,
+  "error": { "code": "NOT_FOUND", "message": "User not found" }
 }
 ```
-
-To run all tests:
-
-```bash
-dotnet test tests/ResultKit.Tests
-```
-
----
-
-## 📁 Folder Structure
-
-```
-src/
-├── ResultKit                  # Core result implementation
-samples/
-├── ResultKit.SampleApi        # Example WebAPI usage
-├── ...
-tests/
-└── ResultKit.Tests            # Unit tests
-```
-
----
-
-## 🧱 Architecture
-
-- `Result`/`Result<T>`: success, error, validation error, exception
-- `Error`, `ValidationError`: standardized error contracts
-- Extension methods: Map, Bind, Match, ToActionResult
-- **Immutable, functional, testable design**
-
----
-
-## 💡 Motivation
-
-Tired of ambiguous error returns or magic strings? ResultKit brings:
-
-- 🔒 Type-safety for all result flows
-- 🔁 Cleaner APIs & predictable error handling
-- 🧪 Seamless testing
-- 🧩 Integration-ready for service & API layers
-
----
 
 ## 📜 License
 
 MIT © [Ataberk Kaya](https://github.com/taberkkaya)
-
----
-
-> 📎 For detailed usage and API samples, see `/samples` and `/tests` folders
-
----
-
-<div align="center">
-Made with ❤️ by [@taberkkaya](https://github.com/taberkkaya)
-</div>
